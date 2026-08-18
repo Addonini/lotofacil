@@ -19,36 +19,40 @@ def buscar_ultimo_sorteio():
     
     try:
         resposta = requests.get(url, headers=headers, verify=False)
+        print(f"Status da API da Caixa: {resposta.status_code}")
+        
         if resposta.status_code == 200:
             dados = resposta.json()
             data_formatada = datetime.strptime(dados["dataApuracao"], '%d/%m/%Y').strftime('%Y-%m-%d')
-            
-            # Pegando as 15 dezenas sorteadas
             dezenas = dados["listaDezenas"]
             
             registro = {
-                "id": dados["numero"], 
+                "id": int(dados["numero"]), 
                 "data_sorteio": data_formatada,
             }
-            # Preenche as 15 bolas dinamicamente
             for i in range(15):
                 registro[f"bola_{i+1}"] = int(dezenas[i])
                 
+            print(f"📦 Dados extraídos com sucesso para o concurso: {registro['id']}")
             return registro
         else:
-            print(f"❌ Erro na API: Status {resposta.status_code}")
+            print(f"❌ Erro na API da Caixa: Status {resposta.status_code}")
             return None
     except Exception as e:
-        print(f"❌ Erro de conexão: {e}")
+        print(f"❌ Erro de conexão ao buscar API: {e}")
         return None
 
 def salvar_no_banco(registro):
-    if not registro: return
+    if not registro: 
+        print("⚠️ Nenhum registro para salvar.")
+        return
+        
     try:
-        supabase.table("lotofacil").upsert(registro).execute()
-        print(f"✅ Sucesso! Concurso {registro['id']} salvo no Supabase.")
+        print("Tentando salvar no Supabase...")
+        resposta_banco = supabase.table("lotofacil").upsert(registro).execute()
+        print(f"✅ Sucesso absoluto! Resposta do Supabase: {resposta_banco}")
     except Exception as e:
-        print(f"❌ Erro ao salvar no banco: {e}")
+        print(f"🚨 ERRO CRÍTICO AO SALVAR NO SUPABASE: {e}")
 
 if __name__ == "__main__":
     import urllib3
