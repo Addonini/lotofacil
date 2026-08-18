@@ -48,9 +48,9 @@ def salvar_no_banco(registro):
         return
         
     try:
-        print("Tentando salvar no Supabase...")
-        resposta_banco = supabase.table("lotofacil").upsert(registro).execute()
-        print(f"✅ Sucesso absoluto! Resposta do Supabase: {resposta_banco}")
+        print(f"Tentando salvar o concurso {registro['id']} no Supabase...")
+        resposta = supabase.table("lotofacil").upsert(registro).execute()
+        print(f"📡 Resposta completa do Supabase: {resposta}")
     except Exception as e:
         print(f"🚨 ERRO CRÍTICO AO SALVAR NO SUPABASE: {e}")
 
