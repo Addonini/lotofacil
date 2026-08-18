@@ -1,3 +1,5 @@
-requests
-supabase
+streamlit
 pandas
+numpy
+supabase
+requests
