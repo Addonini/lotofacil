@@ -84,6 +84,7 @@ with aba_dash:
     st.divider()
     st.subheader("📊 Frequência Histórica (As 25 Dezenas da Lotofácil)")
     st.bar_chart(data=frequencias.set_index('Número'))
+    
 # ==========================================
 # ABA 2: GERADOR
 # ==========================================
