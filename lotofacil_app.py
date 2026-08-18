@@ -7,7 +7,13 @@ st.set_page_config(page_title="Lotofácil Analytics", page_icon="🟣", layout="
 
 @st.cache_resource
 def init_connection():
-    return create_client(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
+    try:
+        url = st.secrets["SUPABASE_URL"]
+        key = st.secrets["SUPABASE_KEY"]
+        return create_client(url, key)
+    except Exception as e:
+        st.error("⚠️ Erro nas credenciais.")
+        st.stop()
 
 supabase: Client = init_connection()
 
