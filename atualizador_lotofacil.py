@@ -3,8 +3,8 @@ import requests
 from datetime import datetime
 from supabase import create_client, Client
 
-URL_SUPABASE = os.environ.get("NEXT_PUBLIC_SUPABASE_URL=https://ubocevhrygpvzgxvbkqz.supabase.co")
-KEY_SUPABASE = os.environ.get("=sb_publishable_gA4yxBeUe3JBlP1WPCrW-g_2Bt_FwthSUPABASE_URL")
+URL_SUPABASE = os.environ.get("https://ubocevhrygpvzgxvbkqz.supabase.co")
+KEY_SUPABASE = os.environ.get("sb_publishable_gA4yxBeUe3JBlP1WPCrW-g_2Bt_Fwth")
 
 if not URL_SUPABASE or not KEY_SUPABASE:
     print("❌ ERRO: Chaves do Supabase não encontradas!")
