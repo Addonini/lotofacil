@@ -5,6 +5,7 @@ from supabase import create_client, Client
 
 st.set_page_config(page_title="Lotofácil Analytics", page_icon="🟣", layout="wide")
 
+# --- CONEXÃO SEGURA COM O SUPABASE ---
 @st.cache_resource
 def init_connection():
     try:
@@ -12,7 +13,7 @@ def init_connection():
         key = st.secrets["SUPABASE_KEY"]
         return create_client(url, key)
     except Exception as e:
-        st.error("⚠️ Erro nas credenciais.")
+        st.error(f"⚠️ Erro nas credenciais do Supabase: {e}")
         st.stop()
 
 supabase: Client = init_connection()
