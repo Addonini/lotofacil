@@ -57,15 +57,21 @@ aba_dash, aba_gerador, aba_conferidor = st.tabs(["📊 Dashboard", "🔮 Gerador
 # ==========================================
 with aba_dash:
     st.subheader(f"📌 Resultado do Concurso {int(ultimo_concurso['id'])}")
-    bolas_sorteadas = [int(ultimo_concurso[f'bola_{i}']) for i in range(1, 16)]
+    st.markdown(f"**Data do Sorteio:** {ultimo_concurso.get('data_sorteio', 'N/A')}")
     
-    # Exibindo em 3 linhas de 5 bolas para ficar bonito
-    for i in range(0, 15, 5):
-        cols = st.columns(5)
-        for j in range(5):
-            cols[j].success(f"**{bolas_sorteadas[i+j]:02d}**")
+    # Extrai e converte as 15 bolas sorteadas com segurança
+    try:
+        bolas_sorteadas = [int(ultimo_concurso[f'bola_{i}']) for i in range(1, 16)]
+        
+        # Exibindo as 15 bolas em 3 linhas de 5 colunas
+        for i in range(0, 15, 5):
+            cols = st.columns(5)
+            for j in range(5):
+                cols[j].success(f"**{bolas_sorteadas[i+j]:02d}**")
+    except Exception as e:
+        st.error(f"Erro ao carregar as bolas sorteadas: {e}")
 
-    # Calcula Frequências
+    # Calcula Frequências para o gráfico
     lista_colunas = [df[f'bola_{i}'] for i in range(1, 16)]
     todas_as_bolas = pd.concat(lista_colunas)
     frequencias = todas_as_bolas.value_counts().reset_index()
@@ -73,12 +79,11 @@ with aba_dash:
     
     todos_numeros = pd.DataFrame({'Número': range(1, 26)})
     frequencias = pd.merge(todos_numeros, frequencias, on='Número', how='left').fillna(0)
-    frequencias_ordenadas = frequencias.sort_values(by='Vezes Sorteado', ascending=False)
+    frequencias = frequencias.sort_values(by='Número')
 
     st.divider()
-    st.subheader("📊 Frequência Histórica (As 25 Dezenas)")
+    st.subheader("📊 Frequência Histórica (As 25 Dezenas da Lotofácil)")
     st.bar_chart(data=frequencias.set_index('Número'))
-
 # ==========================================
 # ABA 2: GERADOR
 # ==========================================
