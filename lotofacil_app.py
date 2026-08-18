@@ -29,6 +29,7 @@ ultimo_concurso = df.iloc[-1]
 prox_concurso = int(ultimo_concurso['id']) + 1
 
 st.title("🟣 Painel Analítico da Lotofácil")
+st.write("🕵️ Colunas que vieram do banco Lotofácil:", df.columns.tolist())
 st.markdown(f"**Último Concurso:** {int(ultimo_concurso['id'])} | **Data:** {ultimo_concurso.get('data_sorteio', '')}")
 
 aba_dash, aba_gerador, aba_conferidor = st.tabs(["📊 Dashboard", "🔮 Gerador Inteligente", "✅ Conferidor"])
