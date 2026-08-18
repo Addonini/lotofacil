@@ -16,6 +16,17 @@ def load_data():
     res = supabase.table("lotofacil").select("*").order("id", desc=False).execute()
     return pd.DataFrame(res.data)
 
+df = load_data()
+
+# --- BLOCO DE PROTEÇÃO SE A TABELA ESTIVER VAZIA ---
+if df.empty:
+    st.warning("⚠️ A tabela `lotofacil` está vazia no Supabase!")
+    st.info("👉 Vá até o seu repositório no **GitHub (Actions)** e clique em **Run workflow** no robô da Lotofácil para baixar o primeiro sorteio e popular o banco de dados.")
+    st.stop()
+
+ultimo_concurso = df.iloc[-1]
+prox_concurso = int(ultimo_concurso['id']) + 1
+
 def buscar_meus_jogos():
     res = supabase.table("meus_jogos_lotofacil").select("*").order("id", desc=True).execute()
     return pd.DataFrame(res.data)
