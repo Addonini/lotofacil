@@ -21,3 +21,12 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: python atualizador_lotofacil.py
+- name: Rodar o Atualizador
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        run: python atualizador_lotofacil.py
+
+      # 👇 ADICIONE ESTE BLOCO NOVO PARA O ROBÔ ACORDAR A TELA 👇
+      - name: Manter Streamlit Acordado
+        run: curl -s "https://lotofacil-app.streamlit.app" > /dev/null
